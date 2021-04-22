@@ -32,7 +32,6 @@ export default class Hand {
             const famCompare = a.spriteName[0].localeCompare(b.spriteName[0]);
             if(famCompare === 0) {
                 const aVal = parseInt(a.spriteName.slice(1)), bVal = parseInt(b.spriteName.slice(1));
-                console.log(aVal, bVal);
                 if(aVal < bVal) {
                     return -1;
                 }

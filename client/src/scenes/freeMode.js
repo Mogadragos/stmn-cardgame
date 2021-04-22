@@ -11,7 +11,7 @@ export default class FreeMode extends Phaser.Scene {
 
     preload() {
         this.cardLabels = [];
-        const types = ['C', 'D', 'H', 'S'];
+        const types = ['H', 'S', 'D', 'C'];
         const families = ['A', 'B', 'C', 'D'];
         for(let j = 0; j < 4; j++) {
             const type = types[j];
