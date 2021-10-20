@@ -1,7 +1,7 @@
 export default class Dealer {
     constructor(scene) {
         const dealerCards = scene.cardLabels.slice(0);
-        this.dealAllCards = (number) => {
+        this.dealCards = (number) => {
             const handCards = [];
             
             while (handCards.length < number) handCards.push(dealerCards.splice(Math.floor(Math.random()*dealerCards.length),1)[0]);

@@ -2,10 +2,10 @@ import Card from '../helpers/card';
 import Hand from '../helpers/hand';
 import Dealer from '../helpers/dealer'
 
-export default class FreeMode extends Phaser.Scene {
+export default class SpiderSolitaire extends Phaser.Scene {
     constructor() {
         super({
-            key: 'FreeMode'
+            key: 'SpiderSolitaire'
         });
     }
 
