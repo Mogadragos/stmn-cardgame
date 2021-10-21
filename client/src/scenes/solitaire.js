@@ -46,10 +46,26 @@ export default class Solitaire extends Phaser.Scene {
 
         this.stub = new Stack(300, 200);
 
-        this.deck = new Deck(this, 150, 200, cards);
+        this.deck = new Deck(this, 150, 200, cards, function(zone) {
+            zone.disableInteractive();
+            this.fill(self.stub.drawAll());
+            this.redrawDeck();
+        }, function() {
+            const deck = this;
+            const last_card = this.last_card = this.cards[this.cards.length-1];
+            if(last_card) {
+                last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
+                    this.off('pointerdown');
+                    this.disableInteractive();
+                    self.stub.addCards(deck.draw(), true);
+                });
+            } else {
+                this.emptyZone.setInteractive();
+            }
+        });
 
         for(let i = 1; i < 8; i++) {
-            this.deck.draw(i);
+            this.deck.draw(i, false);
         }
 
         this.deck.render();

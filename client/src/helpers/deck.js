@@ -1,49 +1,32 @@
-export default class Deck {
-    constructor(scene, x, y, cards) {
+import Stack from './stack';
+
+export default class Deck extends Stack {
+    constructor(scene, x, y, cards, onClickEmpty, setupLastCard) {
+        super(x, y, -1, -1, setupLastCard);
+
         this.scene = scene;
 
-        this.x = x;
-        this.y = y;
-
         this.fill(cards);
+
+        this.onClickEmpty = onClickEmpty;
     }
 
     render() {
         const self = this;
 
-        this.emptyZone = this.scene.add.zone(this.x, this.y, 100, 153).setInteractive({ useHandCursor: true}).on('pointerdown', function () {
-            this.disableInteractive();
-            self.fill(self.scene.stub.getAllCards());
-            self.setupCards();
+        this.emptyZone = this.scene.add.zone(this.x, this.y, 100, 153).setInteractive({ useHandCursor: true }).on('pointerdown', function () {
+            self.onClickEmpty(this);
         }).disableInteractive();
 
-        this.setupCards();
+        this.redrawDeck();
     }
 
-    setupCards() {
-        let i = 0;
+    redrawDeck() {
+        this.depth = 0;
         for(const card of this.cards) {
-            card.sprite.setDepth(i).setTexture('BACK_RED').setX(this.x - i).setY(this.y - i);
-            i++;
+            this.redrawCard(card, false);
         }
         this.setupLastCard();
-    }
-
-    setupLastCard() {
-        const self = this;
-
-        const last_card = this.last_card = this.cards[this.cards.length-1];
-
-        if(last_card) {
-            last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
-                this.off('pointerdown');
-                this.disableInteractive();
-                self.scene.stub.addCards(self.draw(1), true);
-                self.setupLastCard();
-            });
-        } else {
-            this.emptyZone.setInteractive();
-        }
     }
 
     shuffle() {
@@ -56,9 +39,5 @@ export default class Deck {
     fill(cards) {
         this.cards = cards;
         this.shuffle();
-    }
-
-    draw(nb_cards = 1) {
-        return this.cards.splice(this.cards.length - nb_cards, nb_cards);
     }
 }
