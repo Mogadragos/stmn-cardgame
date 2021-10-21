@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import ChooseMode from "./scenes/chooseMode";
 import FreeMode from "./scenes/freeMode";
-import SpiderSolitaire from "./scenes/spiderSolitaire";
+import Solitaire from "./scenes/solitaire";
 
 const config = {
     type: Phaser.AUTO,
@@ -15,7 +15,7 @@ const config = {
     scene: [
         ChooseMode,
         FreeMode,
-        SpiderSolitaire
+        Solitaire
     ]
 };
 
