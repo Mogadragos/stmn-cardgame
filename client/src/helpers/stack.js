@@ -14,6 +14,10 @@ export default class Stack {
         this.cards = cards;
 
         this.depth = 0;
+
+        this.clock = new Phaser.Time.TimerEvent({delay: 1, loop: true, callback: function(test) {
+            console.log(test);
+        }});
     }
     
     addCards(cards, visible = false, setupLastCard = false) {
@@ -39,8 +43,8 @@ export default class Stack {
     }
 
     setupLastCard() {
-        const last_card = this.last_card = this.cards[this.cards.length-1];
-        this.callbackLastCard(last_card);
+        this.last_card = this.cards[this.cards.length-1];
+        this.callbackLastCard(this.last_card);
     }
 
     drawAll() {
@@ -52,5 +56,9 @@ export default class Stack {
         if(setupLastCard && this.setupLastCard) this.setupLastCard();
         this.depth -= nb_cards;
         return cards;
+    }
+
+    getCards(pos_start) {
+        return this.cards.slice(pos_start);
     }
 }

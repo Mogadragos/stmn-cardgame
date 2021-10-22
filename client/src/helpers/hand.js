@@ -16,7 +16,7 @@ export default class Hand {
         
         this.renderZone = () => {
             let dropZone = scene.add.zone(this.x, this.y, this.width, this.height).setRectangleDropZone(this.width, this.height);
-            dropZone.setData({ cards: 0 });
+            dropZone.setData('cards', 0);
             return dropZone;
         };
     }

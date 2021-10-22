@@ -15,5 +15,6 @@ export default class Card {
         }).on('pointerout', function () {
             this.setTint(0xE7E7E7);
         });
+        this.sprite.setData('card', this);
     }
 }

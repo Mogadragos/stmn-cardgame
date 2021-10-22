@@ -43,35 +43,47 @@ export default class Solitaire extends Phaser.Scene {
         //this.cameras.main.setBackgroundColor(0x35654d);
         this.input.setTopOnly(true);
         let self = this;
+
+        let draggedCards = [];
         
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+            for(const card of draggedCards) {
+                card.sprite.x = pointer.x + card.deltaX;
+                card.sprite.y = pointer.y + card.deltaY;
+            }
         });
 
         this.input.on('dragstart', function (pointer, gameObject) {
-            gameObject.setData('depth', gameObject.depth);
-            self.children.bringToTop(gameObject);
+            draggedCards = [];
+            for(const card of gameObject.getData('stack').getCards(gameObject.depth)) {
+                draggedCards.push({ sprite: card.sprite, depth: card.sprite.depth, deltaX: card.sprite.x - pointer.x, deltaY: card.sprite.y - pointer.y, originalX: card.sprite.x, originalY: card.sprite.y });
+                self.children.bringToTop(card.sprite);
+            };
         });
 
         this.input.on('dragend', function (pointer, gameObject, dropped) {
             gameObject.setTint();
             if (!dropped) {
-                gameObject.x = gameObject.input.dragStartX;
-                gameObject.y = gameObject.input.dragStartY;
-                gameObject.setDepth(gameObject.getData('depth'));
+                for(const card of draggedCards) {
+                    card.sprite.x = card.originalX;
+                    card.sprite.y = card.originalY;
+                    card.sprite.depth = card.depth;
+                }
             }
         });
         
         this.input.on('drop', function (pointer, gameObject, dropZone) {
             const dragStack = gameObject.getData('stack');
             const dropStack = dropZone.getData('stack');
-            if(dropStack != dragStack) {
-                dropStack.addCards(dragStack.draw(), true, true);
+            const card = gameObject.getData('card');
+            if(dropStack != dragStack && ( !dropStack.last_card || (card.value == (dropStack.last_card.value - 1) && card.family % 2 != dropStack.last_card.family % 2))) {
+                dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
             } else {
-                gameObject.x = gameObject.input.dragStartX;
-                gameObject.y = gameObject.input.dragStartY;
-                gameObject.setDepth(gameObject.getData('depth'));
+                for(const card of draggedCards) {
+                    card.sprite.x = card.originalX;
+                    card.sprite.y = card.originalY;
+                    card.sprite.depth = card.depth;
+                }
             }
         });
 
@@ -112,7 +124,7 @@ export default class Solitaire extends Phaser.Scene {
         }).disableInteractive();
 
         for(let i = 0; i < 7; i++) {
-            const stack = new DropStack(this, 150 + i * 150, 353, this.deck.draw(i + 1, false), function(last_card) {
+            const stack = new DropStack(this, 150 + i * 150, 353, 20*12+153, this.deck.draw(i + 1, false), function(last_card) {
                 if(last_card) {
                     last_card.sprite.setTexture(last_card.spriteName).setInteractive({ useHandCursor: true});
                     self.input.setDraggable(last_card.sprite);
