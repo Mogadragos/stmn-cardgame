@@ -3,6 +3,8 @@ import Deck from '../helpers/deck';
 import DropStack from '../helpers/dropStack';
 import Stack from '../helpers/stack';
 
+import { SOLITAIRE } from '../helpers/Constants';
+
 export default class Solitaire extends Phaser.Scene {
     constructor() {
         super({
@@ -43,6 +45,10 @@ export default class Solitaire extends Phaser.Scene {
         //this.cameras.main.setBackgroundColor(0x35654d);
         this.input.setTopOnly(true);
         let self = this;
+        
+        this.clock = new Phaser.Time.TimerEvent({delay: 1000, loop: true, repeat: 15, callback: function(test) {
+            console.log(test);
+        }});
 
         let draggedCards = [];
         
@@ -76,9 +82,27 @@ export default class Solitaire extends Phaser.Scene {
             const dragStack = gameObject.getData('stack');
             const dropStack = dropZone.getData('stack');
             const card = gameObject.getData('card');
-            if(dropStack != dragStack && ( !dropStack.last_card || (card.value == (dropStack.last_card.value - 1) && card.family % 2 != dropStack.last_card.family % 2))) {
-                dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
+            let cancel = false;
+            if(dropStack != dragStack) {
+                if(dropStack.type == SOLITAIRE.STACK.COLUMN) {
+                    if (!dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
+                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
+                    } else {
+                        cancel = true;
+                    }
+                } else {
+                    console.log((dropStack.value < 1 || dropStack.family == card.family) && (dropStack.value + 1) == card.value);
+                    console.log(dropStack.value < 1, dropStack.family == card.family, (dropStack.value + 1), card.value);
+                    if((dropStack.value < 1 || dropStack.family == card.family) && (dropStack.value + 1) == card.value) {
+                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
+                    } else {
+                        cancel = true;
+                    }
+                }
             } else {
+                cancel = true;
+            }
+            if(cancel) {
                 for(const card of draggedCards) {
                     card.sprite.x = card.originalX;
                     card.sprite.y = card.originalY;
@@ -98,6 +122,12 @@ export default class Solitaire extends Phaser.Scene {
             if(last_card) {
                 last_card.sprite.setInteractive({ useHandCursor: true});
                 self.input.setDraggable(last_card.sprite);
+            } else {
+                if(self.deck.cards.length < 1) {
+                    console.log("###########");
+                    console.log("  Victory  ");
+                    console.log("###########");
+                }
             }
         });
 
@@ -124,14 +154,40 @@ export default class Solitaire extends Phaser.Scene {
         }).disableInteractive();
 
         for(let i = 0; i < 7; i++) {
-            const stack = new DropStack(this, 150 + i * 150, 353, 20*12+153, this.deck.draw(i + 1, false), function(last_card) {
+            const stack = new DropStack(this, SOLITAIRE.STACK.COLUMN, 150 + i * 150, 353, 0, 20, 120, 20*12+153, this.deck.draw(i + 1, false), function(last_card) {
                 if(last_card) {
                     last_card.sprite.setTexture(last_card.spriteName).setInteractive({ useHandCursor: true});
                     self.input.setDraggable(last_card.sprite);
                 }
             });
-            stack.dropZone;
             stack.render();
+        }
+
+        const goals = [];
+        for(let i = 0; i < 4; i++) {
+            const goal = new DropStack(this, SOLITAIRE.STACK.GOAL, 600 + i * 150, 150, 0, 0, 0, 153, [], function(last_card) {
+                if(last_card) {
+                    if(this.value < 1) this.family = last_card.family;
+                    this.value = last_card.value;
+                    last_card.sprite.disableInteractive().setTint();
+                    if(this.value == 13) {
+                        this.ended = true;
+                        let all_ended = true;
+                        for(const goal of goals) {
+                            if(!goal.ended) all_ended = false;
+                        }
+                        if(all_ended) {
+                            console.log("###########");
+                            console.log("  Victory  ");
+                            console.log("###########");
+                        }
+                    }
+                } else {
+                    this.value = 0;
+                }
+            });
+            goal.render();
+            goals.push(goal);
         }
 
         this.deck.render();
