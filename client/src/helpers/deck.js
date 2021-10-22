@@ -1,14 +1,22 @@
 import Stack from './stack';
 
 export default class Deck extends Stack {
-    constructor(scene, x, y, cards, onClickEmpty, setupLastCard) {
-        super(x, y, -1, -1, setupLastCard);
+    constructor(scene, x, y, cards, callbackLastCard, onClickEmpty) {
+        super(x, y, callbackLastCard, -1, -1, cards);
 
         this.scene = scene;
 
-        this.fill(cards);
-
         this.onClickEmpty = onClickEmpty;
+
+        this.shuffle();
+    }
+
+    /**
+     * @param {Card[]} cards
+     */
+    set Cards (cards) {
+        this.cards = cards;
+        this.shuffle();
     }
 
     render() {
@@ -22,10 +30,7 @@ export default class Deck extends Stack {
     }
 
     redrawDeck() {
-        this.depth = 0;
-        for(const card of this.cards) {
-            this.redrawCard(card, false);
-        }
+        this.redrawStack();
         this.setupLastCard();
     }
 
@@ -34,10 +39,5 @@ export default class Deck extends Stack {
             const j = Math.floor(Math.random() * (i + 1));
             [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
         }
-    }
-
-    fill(cards) {
-        this.cards = cards;
-        this.shuffle();
     }
 }

@@ -1,14 +1,14 @@
 export default class Stack {
-    constructor(x, y, deltaX = 0, deltaY = 0, setupLastCard) {
+    constructor(x, y, callbackLastCard = null, deltaX = 0, deltaY = 0, cards = []) {
         this.x = x;
         this.y = y;
 
         this.deltaX = deltaX;
         this.deltaY = deltaY;
 
-        this.setupLastCard = setupLastCard;
+        this.callbackLastCard = callbackLastCard;
 
-        this.cards = [];
+        this.cards = cards;
 
         this.depth = 0;
     }
@@ -20,9 +20,21 @@ export default class Stack {
         }
     }
 
+    redrawStack() {
+        this.depth = 0;
+        for(const card of this.cards) {
+            this.redrawCard(card, false);
+        }
+    }
+
     redrawCard(card, visible) {
         card.sprite.setDepth(this.depth).setTexture(visible ? card.spriteName : 'BACK_RED').setX(this.x + this.deltaX * this.depth).setY(this.y + this.deltaY * this.depth);
         this.depth++;
+    }
+
+    setupLastCard() {
+        const last_card = this.last_card = this.cards[this.cards.length-1];
+        this.callbackLastCard(last_card);
     }
 
     drawAll() {

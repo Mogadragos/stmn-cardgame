@@ -1,5 +1,6 @@
 import Card from '../helpers/card';
 import Deck from '../helpers/deck';
+import DropStack from '../helpers/dropStack';
 import Stack from '../helpers/stack';
 
 export default class Solitaire extends Phaser.Scene {
@@ -46,13 +47,8 @@ export default class Solitaire extends Phaser.Scene {
 
         this.stub = new Stack(300, 200);
 
-        this.deck = new Deck(this, 150, 200, cards, function(zone) {
-            zone.disableInteractive();
-            this.fill(self.stub.drawAll());
-            this.redrawDeck();
-        }, function() {
+        this.deck = new Deck(this, 150, 200, cards, function(last_card) {
             const deck = this;
-            const last_card = this.last_card = this.cards[this.cards.length-1];
             if(last_card) {
                 last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
                     this.off('pointerdown');
@@ -62,10 +58,19 @@ export default class Solitaire extends Phaser.Scene {
             } else {
                 this.emptyZone.setInteractive();
             }
+        }, function(zone) {
+            zone.disableInteractive();
+            this.Cards = self.stub.drawAll();
+            this.redrawDeck();
         });
 
-        for(let i = 1; i < 8; i++) {
-            this.deck.draw(i, false);
+        for(let i = 0; i < 7; i++) {
+            const stack = new DropStack(this, 150 + i * 150, 403, this.deck.draw(i + 1, false), function(last_card) {
+                if(last_card) {
+                    last_card.sprite.setTexture(last_card.spriteName);
+                }
+            });
+            stack.render();
         }
 
         this.deck.render();
