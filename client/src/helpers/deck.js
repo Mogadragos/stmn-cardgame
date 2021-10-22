@@ -1,37 +1,27 @@
 import Stack from './stack';
 
 export default class Deck extends Stack {
-    constructor(scene, x, y, cards, callbackLastCard, onClickEmpty) {
+    constructor(scene, x, y, cards, callbackLastCard) {
         super(x, y, callbackLastCard, -1, -1, cards);
 
         this.scene = scene;
 
-        this.onClickEmpty = onClickEmpty;
-
         this.shuffle();
+    }
+
+    get EmptyZone() {
+        return this.emptyZone = this.scene.add.zone(this.x, this.y, 100, 153);
     }
 
     /**
      * @param {Card[]} cards
      */
     set Cards (cards) {
+        for(const card of cards) {
+            card.sprite.setData('stack', this);
+        }
         this.cards = cards;
         this.shuffle();
-    }
-
-    render() {
-        const self = this;
-
-        this.emptyZone = this.scene.add.zone(this.x, this.y, 100, 153).setInteractive({ useHandCursor: true }).on('pointerdown', function () {
-            self.onClickEmpty(this);
-        }).disableInteractive();
-
-        this.redrawDeck();
-    }
-
-    redrawDeck() {
-        this.redrawStack();
-        this.setupLastCard();
     }
 
     shuffle() {

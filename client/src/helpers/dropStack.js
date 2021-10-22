@@ -7,13 +7,11 @@ export default class DropStack extends Stack {
         this.scene = scene;
     }
 
-    render() {
-        const self = this;
-
-        this.dropZone = this.scene.add.zone(this.x, this.y, 100, 20 * 6 + 153).setInteractive({ useHandCursor: true });
-
-        this.redrawStack();
-
-        this.setupLastCard();
+    get dropZone() {
+        const width = 100, height = 20 * 12 + 153;
+        const dropZone = this.scene.add.zone(this.x, this.y, width, height).setRectangleDropZone(width, height).setDepth(-1);
+        dropZone.setData({ stack: this });
+        this.scene.add.rectangle(this.x, dropZone.y + 120, width, height, 0x6666ff).setDepth(-1);
+        return dropZone;
     }
 }
