@@ -1,0 +1,9 @@
+Solitaire :
+
+Vraie victoire (animation, png frame / frame ou particules)
+Intégrer solitaire classique (3 pioche, pas mélanger, algo qui check)
+(Dbl Click pour placer automatiquement)
+
+Protection pour éviter double clic pioche
+
+Customiser le theme dans mon style

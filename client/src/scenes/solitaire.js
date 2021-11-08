@@ -20,29 +20,29 @@ export default class Solitaire extends Phaser.Scene {
             let value = 1;
             {
                 const label = type + value;
-                this.load.image(label, 'src/assets/cards/'+ ('A' + type) +'.png');
+                this.load.image(label, './src/assets/cards/'+ ('A' + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++
             }
             for(let i=2; i<11; i++) {
                 const label = type + value;
-                this.load.image(label, 'src/assets/cards/'+ (i + type) +'.png');
+                this.load.image(label, './src/assets/cards/'+ (i + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++;
             }
             for(let head of ['J', 'Q', 'K']) {
                 const label = type + value;
-                this.load.image(label, 'src/assets/cards/'+ (head + type) +'.png');
+                this.load.image(label, './src/assets/cards/'+ (head + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++;
             }
             family++;
         }
-        this.load.image('BACK_RED', 'src/assets/cards/red_back.png');
+        this.load.image('BACK_RED', './src/assets/cards/red_back.png');
     }
 
     create() {
-        //this.cameras.main.setBackgroundColor(0x35654d);
+        this.cameras.main.setBackgroundColor(0x35654d);
         this.input.setTopOnly(true);
         let self = this;
         

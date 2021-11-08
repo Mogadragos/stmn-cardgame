@@ -14,7 +14,6 @@ const config = {
     },
     scene: [
         ChooseMode,
-        FreeMode,
         Solitaire
     ]
 };
