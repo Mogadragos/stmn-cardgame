@@ -14,9 +14,8 @@ export default class DropStack extends Stack {
      * @param {number} height 
      * @param {Card[]} cards 
      * @param {function=} callbackLastCard 
-     * @param {function=} callbackDrop 
      */
-    constructor(scene, type, x, y, deltaX, deltaY, deltaZoneY, height, cards, callbackLastCard = null, callbackDrop = null) {
+    constructor(scene, type, x, y, deltaX, deltaY, deltaZoneY, height, cards, callbackLastCard = null) {
         super(x, y, callbackLastCard, deltaX, deltaY, cards);
 
         this.type = type;
@@ -27,9 +26,6 @@ export default class DropStack extends Stack {
         const width = 100;
 
         this.dropZone = this.scene.add.zone(this.x, this.y + deltaZoneY, width, this.height).setDepth(-1).setDropZone();
-        //.setRectangleDropZone(width, this.height)
         this.dropZone.setData('stack', this);
-
-        this.scene.add.rectangle(this.x, this.y + deltaZoneY, width, this.height, 0x6666ff).setDepth(-1);
     }
 }
