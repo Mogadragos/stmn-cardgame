@@ -6,4 +6,8 @@ Intégrer solitaire classique (3 pioche, pas mélanger, algo qui check)
 
 Protection pour éviter double clic pioche
 
+Image fond de pioche
+
 Customiser le theme dans mon style
+
+Fin automatique
