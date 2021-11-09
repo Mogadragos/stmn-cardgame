@@ -21,7 +21,6 @@ export default class Deck extends Stack {
             card.sprite.setData('stack', this);
         }
         this.cards = cards;
-        this.shuffle();
     }
 
     shuffle() {
