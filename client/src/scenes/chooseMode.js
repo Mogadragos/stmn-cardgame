@@ -8,7 +8,7 @@ export default class ChooseMode extends Phaser.Scene {
     preload() {}
 
     create() {
-        this.cameras.main.setBackgroundColor(0x35654d);
+        this.cameras.main.setBackgroundColor(0x3e765a);
         this.input.setTopOnly(true);
         let self = this;
 
@@ -19,7 +19,7 @@ export default class ChooseMode extends Phaser.Scene {
 
         let i = 0;
         for(const scene of scenes) {
-            const button = this.add.text(75, 350 + 20 * i, [scene.name]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+            const button = this.add.text(75, 350 + 20 * i, [scene.name]).setFontSize(18).setFontFamily('Arial').setColor('#00ffff').setInteractive();
             button.on('pointerdown', function () {
                 self.scene.launch(scene.key).sleep();
             }).on('pointerover', function () {

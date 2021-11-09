@@ -43,11 +43,11 @@ export default class Solitaire extends Phaser.Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor(0x35654d);
+        this.cameras.main.setBackgroundColor(0x3e765a);
         this.input.setTopOnly(true);
         let self = this;
 
-        this.clock = new Clock(this, 0, 0);
+        this.clock = new Clock(this, 20, 20);
 
         let draggedCards = [];
         

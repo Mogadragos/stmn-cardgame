@@ -31,7 +31,7 @@ export default class FreeMode extends Phaser.Scene {
     }
 
     create() {
-        this.cameras.main.setBackgroundColor(0x35654d);
+        this.cameras.main.setBackgroundColor(0x3e765a);
         this.input.setTopOnly(true);
         let self = this;
 
@@ -40,7 +40,7 @@ export default class FreeMode extends Phaser.Scene {
 
         this.dealer = new Dealer(this);
 
-        this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Arial').setColor('#00ffff').setInteractive();
 
 		this.dealText.on('pointerdown', function () {
             self.cards = self.dealer.dealCards(13);
@@ -54,7 +54,7 @@ export default class FreeMode extends Phaser.Scene {
             self.dealText.setColor('#00ffff');
         })
 
-        this.orderCards = this.add.text(75, 300, ['ORDER CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.orderCards = this.add.text(75, 300, ['ORDER CARDS']).setFontSize(18).setFontFamily('Arial').setColor('#00ffff').setInteractive();
 
         this.orderCards.on('pointerdown', function() {
             self.hand.orderCards();
