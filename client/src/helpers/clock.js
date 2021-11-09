@@ -1,6 +1,6 @@
 export default class Clock {
     constructor(scene, x, y, isRunning = true) {
-        this.text = scene.add.text(x, y, "").setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
+        this.text = scene.add.text(x, y, "").setFontSize(15).setFontFamily('Trebuchet MS').setColor('#ffffff');
         this.isRunning = isRunning;
 
         this.timer = scene.time.addEvent({
