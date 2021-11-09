@@ -4,6 +4,7 @@ import DropStack from '../helpers/dropStack';
 import Stack from '../helpers/stack';
 
 import { SOLITAIRE } from '../helpers/Constants';
+import Clock from '../helpers/clock';
 
 export default class Solitaire extends Phaser.Scene {
     constructor() {
@@ -45,10 +46,8 @@ export default class Solitaire extends Phaser.Scene {
         this.cameras.main.setBackgroundColor(0x35654d);
         this.input.setTopOnly(true);
         let self = this;
-        
-        this.clock = new Phaser.Time.TimerEvent({delay: 1000, loop: true, repeat: 15, callback: function(test) {
-            console.log(test);
-        }});
+
+        this.clock = new Clock(this, 0, 0);
 
         let draggedCards = [];
         
@@ -91,8 +90,6 @@ export default class Solitaire extends Phaser.Scene {
                         cancel = true;
                     }
                 } else {
-                    console.log((dropStack.value < 1 || dropStack.family == card.family) && (dropStack.value + 1) == card.value);
-                    console.log(dropStack.value < 1, dropStack.family == card.family, (dropStack.value + 1), card.value);
                     if((dropStack.value < 1 || dropStack.family == card.family) && (dropStack.value + 1) == card.value) {
                         dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
                     } else {
@@ -124,9 +121,7 @@ export default class Solitaire extends Phaser.Scene {
                 self.input.setDraggable(last_card.sprite);
             } else {
                 if(self.deck.cards.length < 1) {
-                    console.log("###########");
-                    console.log("  Victory  ");
-                    console.log("###########");
+                    this.win();
                 }
             }
         });
@@ -177,9 +172,7 @@ export default class Solitaire extends Phaser.Scene {
                             if(!goal.ended) all_ended = false;
                         }
                         if(all_ended) {
-                            console.log("###########");
-                            console.log("  Victory  ");
-                            console.log("###########");
+                            this.win();
                         }
                     }
                 } else {
@@ -194,5 +187,13 @@ export default class Solitaire extends Phaser.Scene {
     }
     
     update() {
+        this.clock.update();
+    }
+
+    win() {
+        this.clock.stop();
+        console.log("###########");
+        console.log("  Victory  ");
+        console.log("###########");
     }
 }
