@@ -16,9 +16,9 @@ export default class Clock {
     }
 
     stop() {
-        this.text.setText(Math.floor(this.timer.getElapsed())/1000);
-        this.isRunning = false;
         this.timer.paused = true;
+        this.isRunning = false;
+        this.text.setText(Math.floor(this.timer.getElapsed())/1000);
     }
 
 }
