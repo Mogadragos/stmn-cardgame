@@ -1,10 +1,10 @@
 import Card from '../helpers/card';
+import Clock from '../helpers/clock';
 import Deck from '../helpers/deck';
 import DropStack from '../helpers/dropStack';
 import Stack from '../helpers/stack';
 
 import { SOLITAIRE } from '../helpers/Constants';
-import Clock from '../helpers/clock';
 
 export default class Solitaire extends Phaser.Scene {
     constructor() {
@@ -21,25 +21,25 @@ export default class Solitaire extends Phaser.Scene {
             let value = 1;
             {
                 const label = type + value;
-                this.load.image(label, './src/assets/cards/'+ ('A' + type) +'.png');
+                this.load.image(label, './assets/cards/'+ ('A' + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++
             }
             for(let i=2; i<11; i++) {
                 const label = type + value;
-                this.load.image(label, './src/assets/cards/'+ (i + type) +'.png');
+                this.load.image(label, './assets/cards/'+ (i + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++;
             }
             for(let head of ['J', 'Q', 'K']) {
                 const label = type + value;
-                this.load.image(label, './src/assets/cards/'+ (head + type) +'.png');
+                this.load.image(label, './assets/cards/'+ (head + type) +'.png');
                 this.cards_data.push({label, family, value});
                 value++;
             }
             family++;
         }
-        this.load.image('BACK_RED', './src/assets/cards/red_back.png');
+        this.load.image('BACK_RED', './assets/cards/red_back.png');
     }
 
     create() {
@@ -121,7 +121,7 @@ export default class Solitaire extends Phaser.Scene {
                 self.input.setDraggable(last_card.sprite);
             } else {
                 if(self.deck.cards.length < 1) {
-                    this.win();
+                    self.win();
                 }
             }
         });
@@ -160,11 +160,14 @@ export default class Solitaire extends Phaser.Scene {
 
         const goals = [];
         for(let i = 0; i < 4; i++) {
-            const goal = new DropStack(this, SOLITAIRE.STACK.GOAL, 600 + i * 150, 150, 0, 0, 0, 153, [], function(last_card) {
+            const x = 600 + i * 150;
+
+            this.add.graphics().lineStyle(2, 0xd3d3d3, 1).strokeRect(x - 50, 74, 100, 153).setDepth(-1);
+
+            const goal = new DropStack(this, SOLITAIRE.STACK.GOAL, x, 150, 0, 0, 0, 153, [], function(last_card) {
                 if(last_card) {
                     if(this.value < 1) this.family = last_card.family;
                     this.value = last_card.value;
-                    last_card.sprite.disableInteractive().setTint();
                     if(this.value == 13) {
                         this.ended = true;
                         let all_ended = true;
@@ -172,7 +175,7 @@ export default class Solitaire extends Phaser.Scene {
                             if(!goal.ended) all_ended = false;
                         }
                         if(all_ended) {
-                            this.win();
+                            self.win();
                         }
                     }
                 } else {
