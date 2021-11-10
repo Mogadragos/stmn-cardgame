@@ -5,7 +5,9 @@ export default class ChooseMode extends Phaser.Scene {
         });
     }
 
-    preload() {}
+    preload() {
+        this.load.bitmapFont('arial', './assets/fonts/arial.png', './assets/fonts/arial.xml');
+    }
 
     create() {
         this.cameras.main.setBackgroundColor(0x3e765a);
@@ -19,13 +21,13 @@ export default class ChooseMode extends Phaser.Scene {
 
         let i = 0;
         for(const scene of scenes) {
-            const button = this.add.text(75, 350 + 20 * i, [scene.name]).setFontSize(18).setFontFamily('Arial').setColor('#00ffff').setInteractive();
+            const button = this.add.bitmapText(75, 350 + 20 * i, 'arial', scene.name, 18).setInteractive();
             button.on('pointerdown', function () {
                 self.scene.launch(scene.key).sleep();
             }).on('pointerover', function () {
-                this.setColor('#ff69b4');
+                this.setTint(0xff69b4);
             }).on('pointerout', function () {
-                this.setColor('#00ffff');
+                this.clearTint();
             });
             i++;
         }

@@ -1,7 +1,7 @@
 export default class Clock {
-    constructor(scene, x, y, isRunning = true) {
-        this.text = scene.add.text(x, y, "").setFontSize(15).setFontFamily('Arial').setColor('#ffffff');
-        this.isRunning = isRunning;
+    constructor(scene, x, y) {
+        this.text = scene.add.bitmapText(x, y, 'arial', "0", 15);
+        this.isRunning = false;
         this.minutes = 0;
 
         const self = this;
@@ -9,11 +9,16 @@ export default class Clock {
         this.timer = scene.time.addEvent({
             delay: 60000,
             loop: true,
-            paused: !isRunning,
+            paused: true,
             callback: () => {
                 self.minutes++;
             }
         });
+    }
+
+    start() {
+        this.timer.paused = false;
+        this.isRunning = true;
     }
 
     update() {

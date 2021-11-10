@@ -187,6 +187,7 @@ export default class Solitaire extends Phaser.Scene {
         }
 
         this.deck.render();
+        this.clock.start();
     }
     
     update() {
