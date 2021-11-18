@@ -2,7 +2,6 @@ import Card from '../helpers/card';
 import Clock from '../helpers/clock';
 import Deck from '../helpers/deck';
 import DropStack from '../helpers/dropStack';
-import Stack from '../helpers/stack';
 
 import { SOLITAIRE } from '../helpers/Constants';
 import Stub from '../helpers/stub';
@@ -89,7 +88,7 @@ export default class Solitaire extends Phaser.Scene {
             let cancel = false;
             if(dropStack != dragStack) {
                 if(dropStack.type == SOLITAIRE.STACK.COLUMN) {
-                    if (true || !dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
+                    if (!dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
                         dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth, true, false), true, true);
                     } else {
                         cancel = true;
