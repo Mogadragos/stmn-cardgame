@@ -18,11 +18,15 @@ export default class Stack {
     
     addCards(cards, visible = false, setupLastCard = false) {
         for(const card of cards) {
-            card.sprite.setData('stack', this);
-            this.cards.push(card);
-            this.redrawCard(card, visible);
-            if(setupLastCard && this.callbackLastCard) this.setupLastCard();
+            this.addCard(card, visible, setupLastCard);
         }
+    }
+
+    addCard(card, visible, setupLastCard) {
+        card.sprite.setData('stack', this);
+        this.cards.push(card);
+        this.redrawCard(card, visible);
+        if(setupLastCard && this.callbackLastCard) this.setupLastCard();
     }
 
     render() {
