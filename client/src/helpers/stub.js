@@ -16,9 +16,15 @@ export default class Stub extends Stack {
         this.prev_cards = [];
     }
 
-    addCards(cards, visible = false, setupLastCard = false) {
-        super.addCards(cards, visible, setupLastCard);
+    addCards(cards) {
+        super.addCards(cards, true);
 
-        this.prev_cards = cards;
+        let i = 0;
+        for(const card of cards) {
+            card.sprite.setX(this.x + 20 * i);
+            i++;
+        }
+
+        this.setupLastCard();
     }
 }

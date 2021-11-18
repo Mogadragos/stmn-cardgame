@@ -137,7 +137,7 @@ export default class Solitaire extends Phaser.Scene {
                 last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
                     this.off('pointerdown');
                     this.disableInteractive();
-                    self.stub.addCards(deck.draw(self.difficulty), true, true);
+                    self.stub.addCards(deck.draw(self.difficulty));
                 });
             } else {
                 this.emptyZone.setInteractive();
