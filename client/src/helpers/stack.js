@@ -51,11 +51,12 @@ export default class Stack {
         return this.draw(this.cards.length, false);
     }
 
-    draw(nb_cards = 1, setupLastCard = true) {
+    draw(nb_cards = 1, setupLastCard = true, reverse = true) {
         const cards = this.cards.splice(this.cards.length - nb_cards, nb_cards);
         if(setupLastCard && this.callbackLastCard) this.setupLastCard();
         this.depth -= nb_cards;
-        return cards.reverse();
+        if(reverse) return cards.reverse();
+        return cards;
     }
 
     getCards(pos_start) {
