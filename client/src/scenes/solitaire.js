@@ -148,7 +148,7 @@ export default class Solitaire extends Phaser.Scene {
             this.disableInteractive();
             self.deck.Cards = self.stub.drawAll();
             for(const card of self.deck.cards) {
-                card.sprite.input.draggable = false;
+                card.sprite.disableInteractive();
             }
             self.deck.render();
         }).disableInteractive();
