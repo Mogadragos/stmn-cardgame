@@ -17,6 +17,10 @@ export default class Stub extends Stack {
     }
 
     addCards(cards) {
+        for(const card of this.cards.slice(-this.nb_cards)) {
+            card.sprite.setX(this.x).disableInteractive();
+        }
+
         super.addCards(cards, true);
 
         let i = 0;
