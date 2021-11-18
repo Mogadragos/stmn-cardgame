@@ -133,7 +133,7 @@ export default class Solitaire extends Phaser.Scene {
         this.deck = new Deck(this, 150, 150, cards, function(last_card) {
             if(last_card) {
                 const deck = this;
-                last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
+                last_card.sprite.setInteractive({ useHandCursor: true }).on('pointerdown', function () {
                     this.off('pointerdown');
                     this.disableInteractive();
                     self.stub.addCards(deck.draw(self.difficulty));
@@ -148,6 +148,7 @@ export default class Solitaire extends Phaser.Scene {
             self.deck.Cards = self.stub.drawAll();
             for(const card of self.deck.cards) {
                 card.sprite.disableInteractive();
+                if(card.sprite.input) card.sprite.input.draggable = false;
             }
             self.deck.render();
         }).disableInteractive();
