@@ -5,6 +5,7 @@ import DropStack from '../helpers/dropStack';
 import Stack from '../helpers/stack';
 
 import { SOLITAIRE } from '../helpers/Constants';
+import Stub from '../helpers/stub';
 
 export default class Solitaire extends Phaser.Scene {
     constructor() {
@@ -119,7 +120,7 @@ export default class Solitaire extends Phaser.Scene {
             cards.push(card);
         }
 
-        this.stub = new Stack(300, 150, function(last_card) {
+        this.stub = new Stub(300, 150, function(last_card) {
             if(last_card) {
                 last_card.sprite.setInteractive({ useHandCursor: true});
                 self.input.setDraggable(last_card.sprite);
@@ -128,7 +129,7 @@ export default class Solitaire extends Phaser.Scene {
                     self.win();
                 }
             }
-        });
+        }, this.difficulty);
 
         this.deck = new Deck(this, 150, 150, cards, function(last_card) {
             if(last_card) {
@@ -136,7 +137,7 @@ export default class Solitaire extends Phaser.Scene {
                 last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
                     this.off('pointerdown');
                     this.disableInteractive();
-                    self.stub.addCards(deck.draw(), true, true);
+                    self.stub.addCards(deck.draw(self.difficulty), true, true);
                 });
             } else {
                 this.emptyZone.setInteractive();
