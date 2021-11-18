@@ -13,6 +13,10 @@ export default class Solitaire extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.difficulty = data.difficulty;
+    }
+
     preload() {
         this.cards_data = [];
         const types = ['H', 'S', 'D', 'C'];
