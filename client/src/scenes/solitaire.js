@@ -146,7 +146,7 @@ export default class Solitaire extends Phaser.Scene {
 
         this.deck.EmptyZone.setInteractive({ useHandCursor: true }).on('pointerdown', function () {
             this.disableInteractive();
-            self.deck.Cards = self.stub.drawAll().reverse();
+            self.deck.Cards = self.stub.drawAll();
             for(const card of self.deck.cards) {
                 card.sprite.input.draggable = false;
             }

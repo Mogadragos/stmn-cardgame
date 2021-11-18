@@ -55,7 +55,7 @@ export default class Stack {
         const cards = this.cards.splice(this.cards.length - nb_cards, nb_cards);
         if(setupLastCard && this.callbackLastCard) this.setupLastCard();
         this.depth -= nb_cards;
-        return cards;
+        return cards.reverse();
     }
 
     getCards(pos_start) {
