@@ -2,15 +2,19 @@ import Card from '../helpers/card';
 import Clock from '../helpers/clock';
 import Deck from '../helpers/deck';
 import DropStack from '../helpers/dropStack';
-import Stack from '../helpers/stack';
 
 import { SOLITAIRE } from '../helpers/Constants';
+import Stub from '../helpers/stub';
 
 export default class Solitaire extends Phaser.Scene {
     constructor() {
         super({
             key: 'Solitaire'
         });
+    }
+
+    init(data) {
+        this.difficulty = data.difficulty;
     }
 
     preload() {
@@ -85,13 +89,13 @@ export default class Solitaire extends Phaser.Scene {
             if(dropStack != dragStack) {
                 if(dropStack.type == SOLITAIRE.STACK.COLUMN) {
                     if (!dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
-                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
+                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth, true, false), true, true);
                     } else {
                         cancel = true;
                     }
                 } else {
                     if((dropStack.value < 1 || dropStack.family == card.family) && (dropStack.value + 1) == card.value) {
-                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth), true, true);
+                        dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth, true, false), true, true);
                     } else {
                         cancel = true;
                     }
@@ -115,7 +119,7 @@ export default class Solitaire extends Phaser.Scene {
             cards.push(card);
         }
 
-        this.stub = new Stack(300, 150, function(last_card) {
+        this.stub = new Stub(300, 150, function(last_card) {
             if(last_card) {
                 last_card.sprite.setInteractive({ useHandCursor: true});
                 self.input.setDraggable(last_card.sprite);
@@ -124,15 +128,15 @@ export default class Solitaire extends Phaser.Scene {
                     self.win();
                 }
             }
-        });
+        }, this.difficulty);
 
         this.deck = new Deck(this, 150, 150, cards, function(last_card) {
             if(last_card) {
                 const deck = this;
-                last_card.sprite.setInteractive({ useHandCursor: true}).on('pointerdown', function () {
+                last_card.sprite.setInteractive({ useHandCursor: true }).on('pointerdown', function () {
                     this.off('pointerdown');
                     this.disableInteractive();
-                    self.stub.addCards(deck.draw(), true, true);
+                    self.stub.addCards(deck.draw(self.difficulty));
                 });
             } else {
                 this.emptyZone.setInteractive();
@@ -141,9 +145,10 @@ export default class Solitaire extends Phaser.Scene {
 
         this.deck.EmptyZone.setInteractive({ useHandCursor: true }).on('pointerdown', function () {
             this.disableInteractive();
-            self.deck.Cards = self.stub.drawAll().reverse();
+            self.deck.Cards = self.stub.drawAll();
             for(const card of self.deck.cards) {
-                card.sprite.input.draggable = false;
+                card.sprite.disableInteractive();
+                if(card.sprite.input) card.sprite.input.draggable = false;
             }
             self.deck.render();
         }).disableInteractive();
