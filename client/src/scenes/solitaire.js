@@ -88,7 +88,7 @@ export default class Solitaire extends Phaser.Scene {
             let cancel = false;
             if(dropStack != dragStack) {
                 if(dropStack.type == SOLITAIRE.STACK.COLUMN) {
-                    if (true || !dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
+                    if (!dropStack.last_card || ((card.value + 1) == dropStack.last_card.value && card.family % 2 != dropStack.last_card.family % 2)) {
                         dropStack.addCards(dragStack.draw(dragStack.cards.length - card.sprite.depth, true, false), true, true);
                     } else {
                         cancel = true;
