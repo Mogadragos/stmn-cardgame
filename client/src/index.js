@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import ChooseMode from "./scenes/chooseMode";
 import FreeMode from "./scenes/freeMode";
-import Pause from "./scenes/pause";
+import Menu from "./scenes/menu";
 import Solitaire from "./scenes/solitaire";
 
 const config = {
@@ -16,7 +16,7 @@ const config = {
     scene: [
         ChooseMode,
         Solitaire,
-        Pause
+        Menu
     ]
 };
 

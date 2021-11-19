@@ -5,7 +5,7 @@ import DropStack from '../helpers/dropStack';
 
 import { SOLITAIRE } from '../helpers/Constants';
 import Stub from '../helpers/stub';
-import PauseButton from '../helpers/pauseButton';
+import MenuButton from '../helpers/menuButton';
 
 export default class Solitaire extends Phaser.Scene {
     constructor() {
@@ -54,7 +54,7 @@ export default class Solitaire extends Phaser.Scene {
 
         this.clock = new Clock(this, 20, 20);
 
-        new PauseButton(this);
+        new MenuButton(this);
 
         let draggedCards = [];
         
