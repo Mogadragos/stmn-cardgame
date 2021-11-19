@@ -1,13 +1,16 @@
 Solitaire :
 
 Vraie victoire (animation, png frame / frame ou particules)
-Intégrer solitaire classique (3 pioche, pas mélanger, algo qui check)
+
+Fin automatique
+
+Algo de vérification + détection de fin
 (Dbl Click pour placer automatiquement)
 
 Protection pour éviter double clic pioche
 
-Image fond de pioche
+Image fond de pioche + fond de tas
 
 Customiser le theme dans mon style
 
-Fin automatique
+Revoir police bitmap
