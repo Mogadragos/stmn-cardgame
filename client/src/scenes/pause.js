@@ -14,8 +14,13 @@ export default class Pause extends Phaser.Scene {
 
         const self = this;
   
-        this.add.bitmapText(this.cameras.main.centerX, this.cameras.main.centerY, 'arial', "Play", 32).setOrigin(1).setInteractive({ useHandCursor: true }).once('pointerdown', function () {
+        this.add.bitmapText(this.cameras.main.centerX, this.cameras.main.centerY - 30, 'arial', "Reprendre", 30).setOrigin(0.5).setInteractive({ useHandCursor: true }).once('pointerdown', function () {
             self.scene.resume(data.scene);
+            self.scene.stop();
+        });
+
+        this.add.bitmapText(this.cameras.main.centerX, this.cameras.main.centerY + 30, 'arial', "Recommencer", 30).setOrigin(0.5).setInteractive({ useHandCursor: true }).once('pointerdown', function () {
+            self.scene.launch(data.scene);
             self.scene.stop();
         });
     }
