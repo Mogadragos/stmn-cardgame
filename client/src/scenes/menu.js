@@ -14,6 +14,8 @@ export default class Menu extends Phaser.Scene {
 
         const self = this;
 
+        this.add.bitmapText(this.cameras.main.centerX, 200, 'arial', "Pause", 54).setOrigin(0.5);
+
         const resume = () => {
             data.scene.resume();
             self.scene.stop();
